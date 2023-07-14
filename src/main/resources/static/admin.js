@@ -206,26 +206,37 @@ function addUser() {
     }
 
 
-   try {
-        fetch(URL, {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json;charset=UTF-8'
-            },
-            body: JSON.stringify({
-                'username': username,
-                'email': email,
-                'password': password,
-                'roles': roles
-            })
+    fetch(URL, {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json;charset=UTF-8'
+        },
+        body: JSON.stringify({
+            'username': username,
+            'email': email,
+            'password': password,
+            'roles': roles
         })
-            .then(() => {
-                document.getElementById('users-tab').click()
-                getUsers()
-                document.newUserForm.reset()
-            })
-    } catch (err){
-       document.getElementById('error-message').innerHTML = err.toString();
-   }
+    })
+        .then(response => {
+            if (response.ok) {
+                // Ответ успешный
+                document.getElementById('users-tab').click();
+                getUsers();
+                document.getElementById('error-message').textContent = '';
+                document.newUserForm.reset();
+            } else {
+                response.json().then(data => {
+                    // Получение текста ошибки из поля errorMessage
+                    const errorMessage = data.errorMessage;
+                    console.error(errorMessage);
+                    // Отображение текста ошибки на экране
+                    document.getElementById('error-message').textContent = errorMessage;
+                });
+            }
+        })
+        .catch(error => {
+            console.error(error);
+        });
 
 }

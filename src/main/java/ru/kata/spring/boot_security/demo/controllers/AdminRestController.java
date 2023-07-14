@@ -49,7 +49,7 @@ public class AdminRestController {
             for (FieldError error : fieldErrors) {
                 errorMsg.append(error.getField())
                         .append(" - ").append(error.getDefaultMessage())
-                        .append("\n");
+                        .append(". ");
             }
             throw new CreateUserException(errorMsg.toString());
         }
