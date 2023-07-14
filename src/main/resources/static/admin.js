@@ -188,24 +188,44 @@ function addUser() {
     let email = document.getElementById('addEmail').value;
     let password = document.getElementById('addPassword').value;
     let roles = $("#addRole").val()
+    for (let i = 0; i < roles.length; i++) {
+        if (roles[i] === 'ROLE_ADMIN') {
+            roles[i] = {
+                'id': 1,
+                'roleName': 'ROLE_ADMIN',
+                "authority": "ROLE_ADMIN"
+            }
+        }
+        if (roles[i] === 'ROLE_USER') {
+            roles[i] = {
+                'id': 2,
+                'roleName': 'ROLE_USER',
+                "authority": "ROLE_USER"
+            }
+        }
+    }
 
 
-    fetch(URL, {
-        method: 'POST',
-        headers: {
-            'Content-Type': 'application/json;charset=UTF-8'
-        },
-        body: JSON.stringify({
-            'username': username,
-            'email': email,
-            'password': password,
-            'roles': roles
+   try {
+        fetch(URL, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json;charset=UTF-8'
+            },
+            body: JSON.stringify({
+                'username': username,
+                'email': email,
+                'password': password,
+                'roles': roles
+            })
         })
-    })
-        .then(() => {
-            document.getElementById('users-tab').click()
-            getUsers()
-            document.newUserForm.reset()
-        })
+            .then(() => {
+                document.getElementById('users-tab').click()
+                getUsers()
+                document.newUserForm.reset()
+            })
+    } catch (err){
+       document.getElementById('error-message').innerHTML = err.toString();
+   }
 
 }

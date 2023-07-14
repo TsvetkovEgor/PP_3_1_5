@@ -4,9 +4,11 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.BindingResult;
+import org.springframework.validation.FieldError;
 import org.springframework.web.bind.annotation.*;
 import ru.kata.spring.boot_security.demo.entities.User;
 import ru.kata.spring.boot_security.demo.services.UserService;
+import ru.kata.spring.boot_security.demo.util.CreateUserException;
 
 import javax.validation.Valid;
 import java.security.Principal;
@@ -39,7 +41,19 @@ public class AdminRestController {
     }
 
     @PostMapping("/users")
-    public ResponseEntity<HttpStatus> addNewUser(@RequestBody User user) {
+    public ResponseEntity<HttpStatus> addNewUser(@RequestBody @Valid User user, BindingResult bindingResult) {
+       if(bindingResult.hasErrors()) {
+            StringBuilder errorMsg = new StringBuilder();
+            List<FieldError> fieldErrors = bindingResult.getFieldErrors();
+
+            for (FieldError error : fieldErrors) {
+                errorMsg.append(error.getField())
+                        .append(" - ").append(error.getDefaultMessage())
+                        .append("\n");
+            }
+            throw new CreateUserException(errorMsg.toString());
+        }
+
         userService.saveUser(user);
         return new ResponseEntity<>(HttpStatus.OK);
     }
