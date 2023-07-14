@@ -1,15 +1,14 @@
 package ru.kata.spring.boot_security.demo.util;
 
-
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Component;
 import org.springframework.validation.Errors;
 import org.springframework.validation.Validator;
-import ru.kata.spring.boot_security.demo.entity.User;
-import ru.kata.spring.boot_security.demo.repository.UserRepository;
+import ru.kata.spring.boot_security.demo.entities.User;
+import ru.kata.spring.boot_security.demo.repositories.UserRepository;
 
 import java.util.Optional;
-
 
 @Component
 public class UserValidator implements Validator {
@@ -26,11 +25,13 @@ public class UserValidator implements Validator {
     }
 
     @Override
-    public void validate(Object o, Errors errors) {
-        User user = (User) o;
-        Optional<User> userWithMail = userRepository.findByMail(user.getMail());
-        if (userWithMail.isPresent() && userWithMail.get().getId()!=(user.getId())) {
-            errors.rejectValue("mail", "", "This mail already taken");
+    public void validate(Object target, Errors errors) {
+        User user = (User) target;
+        try {
+            userRepository.findByEmail(user.getEmail());
+        } catch (UsernameNotFoundException ignored){
+            return;
         }
+        errors.rejectValue("email", "", "User is already exists");
     }
 }
