@@ -13,7 +13,7 @@ import javax.persistence.EntityNotFoundException;
 public class ExceptionHandlerController {
     @ExceptionHandler(CreateUserException.class)
     public ResponseEntity<ErrorResponse> handleEntityNotFoundException(CreateUserException ex) {
-        String errorMsg = "Произошла ошибка: " + ex.getMessage()+".";
+        String errorMsg = "Произошла ошибка: " + ex.getMessage();
         ErrorResponse errorResponse = new ErrorResponse(errorMsg);
         return new ResponseEntity<>(errorResponse,HttpStatus.BAD_REQUEST);
     }

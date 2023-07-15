@@ -59,7 +59,17 @@ public class AdminRestController {
     }
 
     @PutMapping("/users")
-    public ResponseEntity<HttpStatus> updateUser(@RequestBody User user) {
+    public ResponseEntity<HttpStatus> updateUser(@RequestBody @Valid User user, BindingResult bindingResult) {
+        if(bindingResult.hasErrors()) {
+            StringBuilder errorMsg = new StringBuilder();
+            List<FieldError> fieldErrors = bindingResult.getFieldErrors();
+            for (FieldError error : fieldErrors) {
+                errorMsg.append(error.getField())
+                        .append(" - ").append(error.getDefaultMessage())
+                        .append(". ");
+            }
+            throw new CreateUserException(errorMsg.toString());
+        }
         userService.updateUser(user);
         return new ResponseEntity<>(HttpStatus.OK);
     }

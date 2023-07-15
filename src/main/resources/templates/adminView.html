@@ -52,7 +52,8 @@
 
             <div class="col-10">
                 <div class="tab-content" id="v-pills-tabContent">
-                    <div role="tabpanel" class="tab-pane fade show active" id="v-pills-admin" aria-labelledby="v-pills-admin-tab">
+                    <div role="tabpanel" class="tab-pane fade show active" id="v-pills-admin"
+                         aria-labelledby="v-pills-admin-tab">
 
                         <div class="d-flex justify-content-between
                         flex-wrap flex-md-nowrap align-items-center pb-2 mb-3 ">
@@ -67,7 +68,8 @@
                                 </button>
                             </li>
                             <li class="nav-item" role="presentation">
-                                <button class="nav-link" id="new-user-tab" data-bs-toggle="tab" data-bs-target="#newUser"
+                                <button class="nav-link" id="new-user-tab" data-bs-toggle="tab"
+                                        data-bs-target="#newUser"
                                         type="button" role="tab" aria-controls="profile" aria-selected="false">New User
                                 </button>
                             </li>
@@ -148,6 +150,7 @@
                                                                         <option value="ROLE_USER">USER</option>
                                                                         <option value="ROLE_ADMIN">ADMIN</option>
                                                                     </select>
+                                                                    <div calss="col-3" id="error-messageModal"></div>
                                                                 </div>
                                                             </div>
                                                             <div class="modal-footer">
@@ -264,16 +267,16 @@
                                                            class="form-control" id="addPassword"
                                                            minlength="5" placeholder="Password"/>
                                                 </div>
-                                                <p>
                                                     <label class="form-label fw-bold">Role</label>
+                                                <div>
                                                     <select class="w-100 form-select" name="addRole"
                                                             id="addRole" size="2" multiple required>
                                                         <option value="ROLE_ADMIN">ADMIN</option>
                                                         <option selected value="ROLE_USER">USER</option>
                                                     </select>
-                                                <div calss= "col-3" id="error-message"></div>
+                                                    <div calss="col-3" id="error-message"></div>
+                                                </div>
 
-                                                </p>
 
                                                 <button type="submit" class="btn btn-success" onclick="addUser()">
                                                     Add new user

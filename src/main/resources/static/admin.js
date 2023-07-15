@@ -143,9 +143,21 @@ function editUser() {
             'roles': roles
         })
     })
-        .then(() => {
-            $('#editModal').modal('hide');
-            getUsers();
+        .then(response => {
+            if(response.ok) {
+                document.getElementById('error-messageModal').textContent = '';
+                $('#editModal').modal('hide');
+                getUsers();
+            } else {
+                response.json().then(data => {
+                    // Получение текста ошибки из поля errorMessage
+                    const errorMessage = data.errorMessage;
+                    console.error(errorMessage);
+                    // Отображение текста ошибки на экране
+                    document.getElementById('error-messageModal').textContent = errorMessage;
+                });
+            }
+
         })
 }
 
